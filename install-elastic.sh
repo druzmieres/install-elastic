@@ -54,4 +54,4 @@ curl http://localhost:9200
 #fi
 #echo "done" >&2
 
-#You will want to tune your memory as well http://stackoverflow.com/a/18152957/56069
+#Check how to tune memory http://stackoverflow.com/a/18152957/56069
