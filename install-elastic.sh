@@ -28,6 +28,23 @@ sudo rm elasticsearch-6.0.0.deb*
 ### Start Elasticsearch
 sudo /etc/init.d/elasticsearch start
 
+_repeat="Y"
+
+while [ $_repeat = "Y" ]
+do
+	echo -n "Enter path to data directory (leave blank for default): "
+read DPATH
+if [ -z "$DPATH" ]; then
+    echo "Set to the default path"
+    _repeat="N"
+elif [ ! -e "$DPATH" ]; then
+    echo "Path not valid"
+    #ask for path again
+else sed -i "12s#/var/lib/elasticsearch#${DPATH}#" /etc/elasticsearch/elasticsearch.yml
+_repeat="N"
+fi
+done
+
 ### Make sure service is running
 curl http://localhost:9200
 
@@ -42,16 +59,7 @@ curl http://localhost:9200
 #    "build_snapshot" : false,
 #    "lucene_version" : "4.9"
 #  },
-#  "tagline" : "If you can see this message, the installation was successful".
+#  "tagline" : "For search."
 #}
-
-### Ask for data path
-#read -p "Please specify the Data directory (default: /var/lib/elasticsearch): " newpath
-#if test "$newpath" = ""; then
-#  echo "Set to the default path" >&2
-#else
-#  sudo sed -i '33s/path.data:*/path.data $NEWPATH/' /etc/elasticsearch/elasticsearch.yml
-#fi
-#echo "done" >&2
 
 #Check how to tune memory http://stackoverflow.com/a/18152957/56069
