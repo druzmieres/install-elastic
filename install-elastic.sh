@@ -41,7 +41,7 @@ curl http://localhost:9200
 #    "build_snapshot" : false,
 #    "lucene_version" : "4.9"
 #  },
-#  "tagline" : "You Know, for Search"
+#  "tagline" : "If you can see this message, the installation was successful".
 #}
 
 ### Ask for data path
