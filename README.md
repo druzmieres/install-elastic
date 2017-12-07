@@ -1,5 +1,5 @@
 # install-elastic
 script to install elastic search
 
-do:
+execute this command:\\
 chmod +x install-elastic.sh && ./install-elastic.sh
