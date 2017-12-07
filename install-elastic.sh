@@ -1,3 +1,4 @@
+#!/bin/bash
 ### Install Java 8 and agree to the license
 cd ~
 # Requirements
