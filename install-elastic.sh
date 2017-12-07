@@ -1,5 +1,8 @@
 ### Install Java 8 and agree to the license
 cd ~
+# Requirements
+sudo apt -y install aptitude
+sudo apt -y install curl
 sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt update
 sudo apt -y install aptitude
