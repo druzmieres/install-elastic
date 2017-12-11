@@ -47,6 +47,9 @@ else
 fi
 done
 
+### Start Elasticsearch
+sudo /etc/init.d/elasticsearch restart
+
 ### Make sure service is running
 curl http://localhost:9200
 
