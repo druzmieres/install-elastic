@@ -32,7 +32,7 @@ _repeat="Y"
 
 while [ $_repeat = "Y" ]
 do
-	echo -n "Enter path to data directory (leave blank for default): "
+	echo -n "Enter path to data directory (leave blank for default): " #(separate multiple locations by comma)
 read DPATH
 if [ -z "$DPATH" ]; then
     echo "Set to the default path"
@@ -40,8 +40,10 @@ if [ -z "$DPATH" ]; then
 elif [ ! -e "$DPATH" ]; then
     echo "Path not valid"
     #ask for path again
-else sed -i "12s#/var/lib/elasticsearch#${DPATH}#" /etc/elasticsearch/elasticsearch.yml
-_repeat="N"
+else
+    #check permissions
+    sudo sed -i "33s#/var/lib/elasticsearch#${DPATH}#" /etc/elasticsearch/elasticsearch.yml
+    _repeat="N"
 fi
 done
 
@@ -59,7 +61,7 @@ curl http://localhost:9200
 #    "build_snapshot" : false,
 #    "lucene_version" : "4.9"
 #  },
-#  "tagline" : "For search."
+#  "tagline" : "You Know, for Search"
 #}
 
 #Check how to tune memory http://stackoverflow.com/a/18152957/56069
