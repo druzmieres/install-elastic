@@ -13,7 +13,12 @@ sudo aptitude -y install oracle-java8-installer
 
 ### Download and install Elasticsearch
 ### Check http://www.elasticsearch.org/download/ for latest version of Elasticsearch and replace wget link
-wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.0.0.deb
+#Only download the file if it doesn't already exist
+if [ ! -f elasticsearch-6.0.0.deb ]; then
+    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.0.0.deb
+fi
+
+#Dpkg deb
 sudo dpkg -i elasticsearch-6.0.0.deb
 
 # Enable Elastic to start automatically (on bootup)
@@ -23,10 +28,7 @@ sudo update-rc.d elasticsearch defaults 95 10
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
 ### Remove deb
-sudo rm elasticsearch-6.0.0.deb*
-
-### Start Elasticsearch
-sudo /etc/init.d/elasticsearch start
+#sudo rm elasticsearch-6.0.0.deb.*
 
 _repeat="Y"
 
@@ -41,14 +43,14 @@ elif [ ! -e "$DPATH" ]; then
     echo "Path not valid"
     #ask for path again
 else
-    #check permissions
-    sudo sed -i "33s#/var/lib/elasticsearch#${DPATH}#" /etc/elasticsearch/elasticsearch.yml
+    #(missing) check permissions
+    sudo sed -i 's#^path.data: .*$#path.data: '"$DPATH"'#' /etc/elasticsearch/elasticsearch.yml 
     _repeat="N"
 fi
 done
 
 ### Start Elasticsearch
-sudo /etc/init.d/elasticsearch restart
+sudo /etc/init.d/elasticsearch start
 
 ### Make sure service is running
 curl http://localhost:9200
