@@ -22,8 +22,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 _repeatPath="Y"
 while [ $_repeatPath = "Y" ]
 do
-	echo "Enter path to data directory"
-	echo -n "separate multiple locations by comma (leave blank for default): "
+	echo -n "Enter path to data directory, separate multiple locations by comma (leave blank for default): "
 read DPATH
 # If empty, then set the default path
 if [ -z "$DPATH" ]; then
@@ -32,7 +31,7 @@ if [ -z "$DPATH" ]; then
     _repeatPath="N"
 # Else, check if the path exists; if it doesn't ask again
 elif [ ! -e "$DPATH" ]; then
-    echo "Path not valid"
+    echo "Invalid path"
 else
     # Give permissions to elasticsearch (this is the default user running the application)
     setfacl -m u:elasticsearch:rwx $DPATH
@@ -53,7 +52,7 @@ if [ -z "$IP" ]; then
     : # Do nothing
 else
     # Replace IP
-    sudo sed -i 's|^#network.host: .*$|network.host: '"$IP"'|' /etc/elasticsearch/elasticsearch.yml 
+    sudo sed -i 's|^[#]*network.host: .*$|network.host: '"$IP"'|' /etc/elasticsearch/elasticsearch.yml
     _repeatIP="N"
 fi
 done
@@ -69,7 +68,7 @@ if [ -z "$PORT" ]; then
     : # Do nothing
 else
     # Replace port
-    sudo sed -i 's|^#http.port: .*$|http.port: '"$PORT"'|' /etc/elasticsearch/elasticsearch.yml 
+    sudo sed -i 's|^[#]*http.port: .*$|http.port: '"$PORT"'|' /etc/elasticsearch/elasticsearch.yml 
     _repeatPort="N"
 fi
 done
@@ -83,20 +82,6 @@ sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 
 # Start Elasticsearch
 sudo /etc/init.d/elasticsearch start
-
-# Download, install and run cerebro
-if [ ! -f elasticsearch-6.0.0.deb ]; then
-wget https://github.com/lmenezes/cerebro/releases/download/v0.7.2/cerebro-0.7.2.tgz
-fi
-
-# Unpack cerebro
-tar -zvxf cerebro-0.7.2.tgz
-cd cerebro-0.7.2/bin/
-
-# Ask for cerebro port
-echo -n "Define cerebro port: "
-read CPORT
-cerebro -Dhttp.port=$CPORT -Dhttp.address=$IP
 
 # Check if elasticsearch service is running
 curl http://$IP:$PORT
@@ -114,3 +99,19 @@ curl http://$IP:$PORT
 #  },
 #  "tagline" : "You Know, for Search"
 #}
+
+sleep 3
+
+# Download, install and run cerebro
+if [ ! -f cerebro-0.7.2.tgz ]; then
+wget https://github.com/lmenezes/cerebro/releases/download/v0.7.2/cerebro-0.7.2.tgz
+fi
+
+# Unpack cerebro
+tar -zvxf cerebro-0.7.2.tgz
+cd cerebro-0.7.2/
+
+# Ask for cerebro port
+echo -n "Define cerebro port: "
+read CPORT
+bin/cerebro -Dhttp.port=$CPORT -Dhttp.address=$IP
