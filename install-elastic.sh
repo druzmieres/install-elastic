@@ -44,13 +44,16 @@ elif [ ! -e "$DPATH" ]; then
     echo "Path not valid"
     #ask for path again
 else
-    #(missing) check permissions
+    #(check permissions (username -> elastic)
+    #setfacl -m u:elastic:rwx $DPATH
+    #replace path
     sudo sed -i 's#^path.data: .*$#path.data: '"$DPATH"'#' /etc/elasticsearch/elasticsearch.yml 
     _repeat="N"
 fi
 done
 
 ### Start Elasticsearch
+setfacl -m u:elasticsearch:rwx $DPATH
 sudo /etc/init.d/elasticsearch start
 
 ### Make sure service is running
