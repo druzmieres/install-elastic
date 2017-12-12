@@ -1,5 +1,6 @@
 # install-elastic
-script to install elastic search
+This is a script to install and run Elasticsearch on Ubuntu 16.04.3 LTS
 
-execute this command:<br>
-chmod +x install-elastic.sh; ./install-elastic.sh
+To run it, execute:<br>
+> - chmod +x install-elastic requirements<br>
+> - ./install-elastic
