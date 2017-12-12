@@ -12,7 +12,7 @@
 #sudo aptitude -y install oracle-java8-installer
 
 #Run requirements
-./requirements
+#./requirements
 
 ### Download and install Elasticsearch
 ### Check http://www.elasticsearch.org/download/ for latest version of Elasticsearch and replace wget link
@@ -57,8 +57,8 @@ fi
 done
 
 ### Stop and start Elasticsearch (restarting doesn't work)
-sudo /etc/init.d/elasticsearch start
 sudo /etc/init.d/elasticsearch stop
+sudo /etc/init.d/elasticsearch start
 
 ### Make sure service is running
 curl http://localhost:9200
