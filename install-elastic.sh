@@ -56,6 +56,11 @@ done
 sudo sed -i 's|^#network.host: .*$|network.host: 172.17.74.243|' /etc/elasticsearch/elasticsearch.yml
 sudo sed -i 's|^#http.port: .*$|http.port: 9200|' /etc/elasticsearch/elasticsearch.yml
 
+#RAM setting. Minimum and maximum heap size should be the same.
+#Don't set more than 50% of available RAM. Don't exceed 32 GB as it'll be counterproductive.
+sudo sed -i 's|^#-Xms.*$|-Xms14g|' /etc/elasticsearch/jvm.options
+sudo sed -i 's|^#-Xmx.*$|-Xms14g|' /etc/elasticsearch/jvm.options
+
 ### Start Elasticsearch
 sudo /etc/init.d/elasticsearch start
 
