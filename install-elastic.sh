@@ -75,21 +75,33 @@ fi
 done
 
 # Ask user to set amount of RAM
-# RAM setting. Minimum and maximum heap size should be the same.
-#Don't set more than 50% of available RAM. Don't exceed 32 GB as it'll be counterproductive.
 echo "RAM setting. Do not set more than 50% of available RAM. Do not exceed 32 GB. Less than 8 GB tends to be counterproductive."
 echo -n "Enter RAM amount in GB: "
 read RAM
 sudo sed -i 's|^-Xms.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 
-### Start Elasticsearch
+# Start Elasticsearch
 sudo /etc/init.d/elasticsearch start
 
-### Make sure service is running
-curl http://$IP:9200
+# Download, install and run cerebro
+if [ ! -f elasticsearch-6.0.0.deb ]; then
+wget https://github.com/lmenezes/cerebro/releases/download/v0.7.2/cerebro-0.7.2.tgz
+fi
 
-### Should return something like this:
+# Unpack cerebro
+tar -zvxf cerebro-0.7.2.tgz
+cd cerebro-0.7.2/bin/
+
+# Ask for cerebro port
+echo -n "Define cerebro port: "
+read CPORT
+cerebro -Dhttp.port=$CPORT -Dhttp.address=$IP
+
+# Check if elasticsearch service is running
+curl http://$IP:$PORT
+
+# Should return something like this:
 # {
 #  "status" : 200,
 #  "name" : "Storm",
@@ -102,5 +114,3 @@ curl http://$IP:9200
 #  },
 #  "tagline" : "You Know, for Search"
 #}
-
-#Download, install and run cerebro
