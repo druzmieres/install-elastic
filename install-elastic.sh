@@ -30,10 +30,6 @@ sudo update-rc.d elasticsearch defaults 95 10
 # set JAVA_HOME
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
-### Start Elasticsearch
-sudo /etc/init.d/elasticsearch start
-#sudo /etc/init.d/elasticsearch stop
-
 _repeat="Y"
 
 while [ $_repeat = "Y" ]
@@ -56,8 +52,11 @@ else
 fi
 done
 
-### Stop and start Elasticsearch (restarting doesn't work)
-sudo /etc/init.d/elasticsearch stop
+#Set IP and Port
+sudo sed -i 's|^#network.host: .*$|network.host: 172.17.74.243|' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's|^#http.port: .*$|http.port: 9200|' /etc/elasticsearch/elasticsearch.yml
+
+### Start Elasticsearch
 sudo /etc/init.d/elasticsearch start
 
 ### Make sure service is running
