@@ -27,9 +27,6 @@ sudo update-rc.d elasticsearch defaults 95 10
 # set JAVA_HOME
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
-### Remove deb
-#sudo rm elasticsearch-6.0.0.deb.*
-
 _repeat="Y"
 
 while [ $_repeat = "Y" ]
@@ -37,6 +34,7 @@ do
 	echo -n "Enter path to data directory (leave blank for default): " #(separate multiple locations by comma)
 read DPATH
 if [ -z "$DPATH" ]; then
+    sudo sed -i 's#^path.data: .*$#path.data: /var/lib/elasticsearch#' /etc/elasticsearch/elasticsearch.yml
     echo "Set to the default path"
     _repeat="N"
 elif [ ! -e "$DPATH" ]; then
