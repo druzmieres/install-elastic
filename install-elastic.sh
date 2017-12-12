@@ -30,6 +30,10 @@ sudo update-rc.d elasticsearch defaults 95 10
 # set JAVA_HOME
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
+### Start Elasticsearch
+sudo /etc/init.d/elasticsearch start
+#sudo /etc/init.d/elasticsearch stop
+
 _repeat="Y"
 
 while [ $_repeat = "Y" ]
@@ -44,17 +48,17 @@ elif [ ! -e "$DPATH" ]; then
     echo "Path not valid"
     #ask for path again
 else
-    #(check permissions (username -> elastic)
-    #setfacl -m u:elastic:rwx $DPATH
+    #Give permissions to elasticsearch
+    setfacl -m u:elasticsearch:rwx $DPATH
     #replace path
     sudo sed -i 's#^path.data: .*$#path.data: '"$DPATH"'#' /etc/elasticsearch/elasticsearch.yml 
     _repeat="N"
 fi
 done
 
-### Start Elasticsearch
-setfacl -m u:elasticsearch:rwx $DPATH
+### Stop and start Elasticsearch (restarting doesn't work)
 sudo /etc/init.d/elasticsearch start
+sudo /etc/init.d/elasticsearch stop
 
 ### Make sure service is running
 curl http://localhost:9200
