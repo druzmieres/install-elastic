@@ -102,6 +102,10 @@ curl http://$IP:$PORT
 
 sleep 3
 
+### Cerebro installation ###
+# Copy cerebro.init to init.d folder
+sudo cp cerebro.init /etc/init.d
+
 # Download, install and run cerebro
 if [ ! -f cerebro-0.7.2.tgz ]; then
 wget https://github.com/lmenezes/cerebro/releases/download/v0.7.2/cerebro-0.7.2.tgz
@@ -111,7 +115,16 @@ fi
 tar -zvxf cerebro-0.7.2.tgz
 cd cerebro-0.7.2/
 
-# Ask for cerebro port
+# Ask for cerebro IP
+echo -n "Enter IP:"
+read CIP
+sudo sed -i 's|address=__IP__|address='"$CIP"'|' /etc/init.d/cerebro.init
+# Ask for cerebro IP
 echo -n "Define cerebro port: "
 read CPORT
-bin/cerebro -Dhttp.port=$CPORT -Dhttp.address=$IP
+sudo sed -i 's|port=__PORT__|port='"$CPORT"'|' /etc/init.d/cerebro.init
+
+# Enable Cerebro to start on bootup
+sudo update-rc.d cerebro defaults 100 5
+# Start Cerebro
+sudo /etc/init.d/cerebro start
