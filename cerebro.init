@@ -1,6 +1,4 @@
 #!/bin/sh
-# Init script for cerebro
-# Maintained by Frenkye
 #
 # /etc/init.d/cerebro -- startup script for Cerebro
 #
@@ -10,20 +8,23 @@
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: 
-# Description:       cerebro
+# Short-Description: Starts cerebro
+# Description:       Starts cerebro using start-stop-daemon
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
+NAME=cerebro-0.7.2
+
+DESC="Cerebro Server"
+
+# Directory where the Cerebro binary distribution resides
+HOME=/usr/share/$NAME
+DAEMON=$HOME/bin/cerebro
 
 name=cerebro
 user=cerebro
-directory=/opt/cerebro
-program=bin/cerebro
-pidfile="${directory}/RUNNING_PID"
-
-# IP and port should be already set
+pidfile="${HOME}/RUNNING_PID"
 address=__IP__
 port=__PORT__
 args="-Dhttp.address=${address} -Dhttp.port=${port}"
@@ -41,7 +42,7 @@ start() {
   start-stop-daemon --start \
       --background \
       --chuid ${user} \
-      --exec /opt/cerebro/bin/cerebro \
+      --exec $DAEMON \
       -- ${args}
 
   emit "$name started."
