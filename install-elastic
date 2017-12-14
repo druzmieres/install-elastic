@@ -84,7 +84,7 @@ sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 sudo /etc/init.d/elasticsearch start
 
 # Check if elasticsearch service is running
-curl http://$IP:$PORT
+#curl http://$IP:$PORT
 
 # Should return something like this:
 # {
@@ -100,9 +100,11 @@ curl http://$IP:$PORT
 #  "tagline" : "You Know, for Search"
 #}
 
-sleep 3
+#sleep 2
 
 ### Cerebro installation ###
+# Copy cerebro folder /to usr/share
+sudo cp -r cerebro-0.7.2 /usr/share/
 # Copy cerebro.init to init.d folder
 sudo cp cerebro.init /etc/init.d
 
@@ -112,7 +114,7 @@ wget https://github.com/lmenezes/cerebro/releases/download/v0.7.2/cerebro-0.7.2.
 fi
 
 # Unpack cerebro
-tar -zvxf cerebro-0.7.2.tgz
+tar -zxf cerebro-0.7.2.tgz
 cd cerebro-0.7.2/
 
 # Ask for cerebro IP
@@ -124,7 +126,18 @@ echo -n "Define cerebro port: "
 read CPORT
 sudo sed -i 's|port=__PORT__|port='"$CPORT"'|' /etc/init.d/cerebro.init
 
+# Check if cerebro user exists. If it doesn't, create it.
+if id "cerebro" >/dev/null 2>&1; then
+        :
+else
+        echo "Creating cerebro user..."
+	sudo useradd cerebro
+fi
+
 # Enable Cerebro to start on bootup
 sudo update-rc.d cerebro defaults 100 5
 # Start Cerebro
-sudo /etc/init.d/cerebro start
+sudo /etc/init.d/cerebro.init start
+
+# Check if elasticsearch service is running
+curl http://$IP:$PORT
