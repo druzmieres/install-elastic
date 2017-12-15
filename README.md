@@ -1,11 +1,12 @@
 # install-elastic
-This is a script to install and run Elasticsearch on Ubuntu 16.04.3 LTS
+These are scripts to install and run Elasticsearch and Cerebro 0.7.2 (github.com/lmenezes/cerebro) on Ubuntu 16.04.3 LTS as services. The scripts allow these applications to automatically run on bootup.
 
-To run it, execute:<br>
+To run them, execute:<br>
 ```
-$ chmod +x install-elastic requirements
+$ chmod +x requirements install-elastic install-cerebro
+$ ./requirements
 $ ./install-elastic
+$ ./install-cerebro
 ```
-The script will ask for the (absolute) data path, IP, port and amount of RAM to use.<br>
-
-The script also installs Cerebro (http://github.com/lmenezes/cerebro) and runs it. Cerebro is only run as a script and not as a service (I plan to fix this soon).
+The Elasticsearch script will ask for the (absolute) data path, IP, port and amount of RAM to use.<br>
+The Cerebro script asks for IP and port.
