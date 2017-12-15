@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Install requirements
-./requirements
-
-## Download and install Elasticsearch
-## Check http://www.elasticsearch.org/download/ for latest version of Elasticsearch and replace wget link
+# Download and install Elasticsearch
+# Check http://www.elasticsearch.org/download/ for latest version of Elasticsearch and replace wget link
 # Only download the file if it does not already exist
 if [ ! -f elasticsearch-6.0.0.deb ]; then
     wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.0.0.deb
@@ -12,11 +9,14 @@ fi
 # Install deb
 sudo dpkg -i elasticsearch-6.0.0.deb
 
-# Enable Elastic to start on bootup
-sudo update-rc.d elasticsearch defaults 95 10
-
 # Set JAVA_HOME (in case it is not automatically set)
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+# Enable on bootup
+sudo systemctl enable elasticsearch.service
+ 
+# Start ElasticSearch 
+sudo /etc/init.d/elasticsearch start
 
 # Ask user for path to store data
 _repeatPath="Y"
@@ -80,11 +80,16 @@ read RAM
 sudo sed -i 's|^-Xms.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 
-# Start Elasticsearch
-sudo /etc/init.d/elasticsearch start
+### Start ElasticSearch 
+sudo /etc/init.d/elasticsearch restart
+echo "Restarting service..."
+sleep 10
+echo "Setting parameters. Please wait..."
+sleep 10
+echo "Sending request..."
 
 # Check if elasticsearch service is running
-#curl http://$IP:$PORT
+curl http://$IP:$PORT
 
 # Should return something like this:
 # {
@@ -99,45 +104,3 @@ sudo /etc/init.d/elasticsearch start
 #  },
 #  "tagline" : "You Know, for Search"
 #}
-
-#sleep 2
-
-### Cerebro installation ###
-# Copy cerebro folder /to usr/share
-sudo cp -r cerebro-0.7.2 /usr/share/
-# Copy cerebro.init to init.d folder
-sudo cp cerebro.init /etc/init.d
-
-# Download, install and run cerebro
-if [ ! -f cerebro-0.7.2.tgz ]; then
-wget https://github.com/lmenezes/cerebro/releases/download/v0.7.2/cerebro-0.7.2.tgz
-fi
-
-# Unpack cerebro
-tar -zxf cerebro-0.7.2.tgz
-cd cerebro-0.7.2/
-
-# Ask for cerebro IP
-echo -n "Enter IP:"
-read CIP
-sudo sed -i 's|address=__IP__|address='"$CIP"'|' /etc/init.d/cerebro.init
-# Ask for cerebro IP
-echo -n "Define cerebro port: "
-read CPORT
-sudo sed -i 's|port=__PORT__|port='"$CPORT"'|' /etc/init.d/cerebro.init
-
-# Check if cerebro user exists. If it doesn't, create it.
-if id "cerebro" >/dev/null 2>&1; then
-        :
-else
-        echo "Creating cerebro user..."
-	sudo useradd cerebro
-fi
-
-# Enable Cerebro to start on bootup
-sudo update-rc.d cerebro defaults 100 5
-# Start Cerebro
-sudo /etc/init.d/cerebro.init start
-
-# Check if elasticsearch service is running
-curl http://$IP:$PORT
