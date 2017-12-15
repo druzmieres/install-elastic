@@ -3,7 +3,7 @@ These are scripts to install, configure and run Elasticsearch and Cerebro 0.7.2 
 
 To run them, execute:<br>
 ```
-$ chmod +x requirements install-elastic install-cerebro
+$ chmod +x *
 $ ./requirements
 $ ./install-elastic
 $ ./install-cerebro
