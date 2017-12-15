@@ -1,0 +1,8 @@
+[Unit]
+After = network.target
+
+[Service]
+ExecStart = /usr/share/cerebro-0.7.2/bin/cerebro -Dpidfile.path=/dev/null -Dhttp.port=1234 -Dhttp.address=127.0.0.1
+
+[Install]
+WantedBy=multi-user.target
