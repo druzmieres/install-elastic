@@ -2,7 +2,7 @@
 
 # Download and install Elasticsearch
 # Check http://www.elasticsearch.org/download/ for latest version of Elasticsearch and replace wget link
-# Only download the file if it does not already exist
+# Only download the file if it doesn't already exist
 if [ ! -f elasticsearch-6.0.0.deb ]; then
     wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.0.0.deb
 fi
@@ -80,7 +80,7 @@ read RAM
 sudo sed -i 's|^-Xms.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 
-### Start ElasticSearch 
+# Start ElasticSearch 
 sudo /etc/init.d/elasticsearch start
 echo "Starting service..."
 sleep 10
