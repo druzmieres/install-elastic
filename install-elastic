@@ -16,7 +16,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 sudo systemctl enable elasticsearch.service
  
 # Start ElasticSearch 
-sudo /etc/init.d/elasticsearch start
+#sudo /etc/init.d/elasticsearch start
 
 # Ask user for path to store data
 _repeatPath="Y"
@@ -81,15 +81,15 @@ sudo sed -i 's|^-Xms.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 
 ### Start ElasticSearch 
-sudo /etc/init.d/elasticsearch restart
-echo "Restarting service..."
+sudo /etc/init.d/elasticsearch start
+echo "Starting service..."
 sleep 10
 echo "Setting parameters. Please wait..."
 sleep 10
 echo "Sending request..."
 
 # Check if elasticsearch service is running
-curl http://$IP:$PORT
+curl --connect-timeout 30 http://$IP:$PORT
 
 # Should return something like this:
 # {
