@@ -86,7 +86,7 @@ echo Please wait...
 sleep 10
 
 # Check if elasticsearch service is running
-#curl http://$IP:$PORT
+#curl http://$IP:$PORT #if it fails, wait and try again
 
 # Should return something like this:
 #{
