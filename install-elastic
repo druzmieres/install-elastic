@@ -80,7 +80,7 @@ read RAM
 sudo sed -i 's|^-Xms.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 
-# Start ElasticSearch 
+# Restart ElasticSearch 
 sudo /etc/init.d/elasticsearch restart
 sleep 10
 echo "Please wait..."
