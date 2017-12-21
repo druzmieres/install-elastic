@@ -86,10 +86,7 @@ echo Please wait...
 sleep 10
 
 # Check if elasticsearch service is running
-curl http://$IP:$PORT
-echo "Retrying..."
-sleep 5
-curl http://$IP:$PORT #first one always fails, don't know why
+#curl http://$IP:$PORT
 
 # Should return something like this:
 #{
