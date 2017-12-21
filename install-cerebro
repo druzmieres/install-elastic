@@ -38,7 +38,7 @@ sudo sed -i 's|^ExecStart = /usr/share/cerebro-0.7.2/bin/cerebro -Dpidfile.path=
 sudo systemctl daemon-reload
 sudo systemctl start cerebro.service
 
-echo "Done"
+echo "Done. Cerebro is now running on http://"$CIP":"$CPORT"."
 
 # Check status
-systemctl status cerebro.service
+#systemctl status cerebro.service
