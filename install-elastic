@@ -82,11 +82,15 @@ sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 
 # Restart ElasticSearch 
 sudo /etc/init.d/elasticsearch restart
+sleep 10
 echo Please wait...
 sleep 10
 
-# Check if elasticsearch service is running
-#curl http://$IP:$PORT #if it fails, wait and try again
+# Check if Elasticsearch service is running
+curl http://$IP:$PORT
+echo "Retrying..."
+sleep 5
+curl http://$IP:$PORT #first one always fails, don't know why
 
 # Should return something like this:
 #{
