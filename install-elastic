@@ -81,7 +81,7 @@ sudo sed -i 's|^-Xmx.*$|-Xms'"$RAM"'g|' /etc/elasticsearch/jvm.options
 sudo /etc/init.d/elasticsearch start
 sleep 10
 echo Please wait...
-sleep 15 #Elasticsearch takes between 20-25 seconds to start
+sleep 20 #Elasticsearch takes between 25-30 seconds to start
 
 # Check if Elasticsearch service is running
 curl http://$IP:$PORT
