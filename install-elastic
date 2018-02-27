@@ -19,7 +19,7 @@ sudo systemctl enable elasticsearch.service
 _repeatPath="Y"
 while [ $_repeatPath = "Y" ]
 do
-	echo -n "Enter path to data directory, separate multiple locations by comma (leave blank for default): "
+	echo -n "Enter path to data directory (leave blank for default: /var/lib/elasticsearch): "
 read DPATH
 # If empty, then set the default path
 if [ -z "$DPATH" ]; then
