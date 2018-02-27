@@ -4,8 +4,8 @@ These are scripts to install, configure and run Elasticsearch and Cerebro 0.7.2 
 To run them, execute:<br>
 ```
 $ chmod +x *.sh
-$ ./requirements
-$ ./install-elastic
-$ ./install-cerebro
+$ ./requirements.sh
+$ ./install-elastic.sh
+$ ./install-cerebro.sh
 ```
 The scripts asks for IP and port. Additionally the Elasticsearch script will ask for the (absolute) data path and amount of RAM to use.
