@@ -3,9 +3,7 @@
 # Download and install Elasticsearch
 # Check http://www.elasticsearch.org/download/ for latest version and replace wget link
 # Only download the file if it doesn't already exist
-if [ ! -f elasticsearch-6.0.0.deb ]; then
-    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.0.0.deb
-fi
+wget -nc https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.0.0.deb
 # Install deb
 sudo dpkg -i elasticsearch-6.0.0.deb
 
